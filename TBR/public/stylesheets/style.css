@@ -5,6 +5,43 @@ body {
     border: 3px solid rgb(255, 0, 179);
     padding: 0 2em 1em;
 }
-h2 {
-    color: blue;
+
+/*.page {
+    display: flex !important;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    align-items: flex-start;
 }
+
+.header {
+    
+}
+
+.title {
+
+}
+
+.content {
+    
+}
+
+.footer {
+
+}
+
+#homeBackground {
+    background-image: url("/images/bookStack.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: contain;
+    object-fit: cover;
+}
+
+.homeTitle {
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+*/
