@@ -1,5 +1,5 @@
 const Book = function (pTitle, pAuthorID, pGenre, pSeries, pReadDate, pBookKeywords, pLocation){
-    this.id //random id
+    this.id = Math.random().toString(16).slice(5)
     this.title = pTitle;
     this.authorId = pAuthorID;
     this.genre = pGenre;
@@ -10,6 +10,7 @@ const Book = function (pTitle, pAuthorID, pGenre, pSeries, pReadDate, pBookKeywo
 };
 
 const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAuthorWebsite){
+    this.id = Math.random().toString(16).slice(5)
     this.firstName = pFirstName;
     this.lastName = pLastName;
     this.alterEgos = pAlterEgos;
