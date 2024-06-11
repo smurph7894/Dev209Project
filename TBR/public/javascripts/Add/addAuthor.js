@@ -1,4 +1,4 @@
-const Book = require ('../models');
+const Author = require ('../models');
 
 
 let authorArray = [];
