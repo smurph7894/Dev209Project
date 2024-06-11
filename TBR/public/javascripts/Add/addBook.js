@@ -1,39 +1,64 @@
-const Book = require ('../models');
+const Book = function (pTitle, pAuthorID, pGenre, pSeries, pReadDate, pBookKeywords, pLocation){
+    this.id = Math.random().toString(16).slice(5)
+    this.title = pTitle;
+    this.authorId = pAuthorID;
+    this.genre = pGenre;
+    this.series = pSeries;
+    this.readDate = pReadDate;
+    this.bookKeywords = pBookKeywords;
+    this.location = pLocation;
+};
 
+let bookArray = [];
+let selectedGenre = "none selected";
+let selectedAuthor = "none selected";
 
-let authorArray = [];
-let iAlterEgo = [""];
 
 //Test inputs
-authorArray.push(new Author("AuthorFirst1", "AuthorLast1", ["Robert Frost"], ["Washington", "best seller"], "url.com"));
-authorArray.push(new Author("AuthorFirst2", "AuthorLast2", "", ["Washington"], "url.com"));
-authorArray.push(new Author("AuthorFirst3", "AuthorLast3", ["Haily Robert"], ["Washington", "best seller"], "url.com"));
-authorArray.push(new Author("AuthorFirst4", "AuthorLast4", ["No Name"], ["Washington", "best seller"], "url.com"));
+bookArray.push( new Book("Title 1", "AuthorId", "Genre1", "Series1", "2019-05-15", ["words", "words2"], "url.com"));
+bookArray.push( new Book("Title 2", "AuthorId", "Genre4", "Seriesasdf", "2019-05-15", ["words", "words2"], "url.com"));
+bookArray.push( new Book("Title 3", "AuthorId", "Genre6", "SeriesFancy", "2019-05-15", ["words", "words2"], "url.com"));
 
-//Add Author #addAuthor
+
+//Add book #addBook
 document.addEventListener("DOMContentLoaded", function(e){
-    document.getElementById("submitAuthor").addEventListener("click", function(){
-// TODO - edit for alter ego to not be entered
-//      - allow for keywords and alter ego to have array
-        authorArray.push(new Author(document.getElementById("iFirstName").value, document.getElementById("iLastName").value, 
-        document.getElementById("iAlterego").value, document.getElementById("iAuthorKeywords").value))
-        document.location.href = "index.html#view";
+    document.getElementById("submitBook").addEventListener("click", addBook);
+    document.location.href = "index.html#view";
+
+    document.addEventListener("change", function(e){
+        if(e.target.id === "iGenre"){
+            selectedGenre = e.target.value;
+        }
     })
 
-    // //TODO unsure if correct
-    // document.addEventListener("change", function(e){
-    //     if(e.target.id === "iAlterEgoBool"){
-    //         if(e.target.id === "iAlterego"){
-    //             iAlterEgo = e.target.value;
-    //         }
-    //     }
-    // })
+    document.addEventListener("change", function(e){
+        if(e.target.id === "iAuthor"){
+            selectedAuthor = e.target.value;
+        }
+    })
 
-})
+    $(document).on("pagebeforeshow", "#view", function(e){
+        createBookList()
+    })
+});
 
-// createList = () => {
-//     let authorList = document.getElementById("AuthorList");
-//     authorList.innerHTML = "";
+// TODO - work on selectAuthor
+function addBook(){
+    bookArray.push( new Book(document.getElementById("iTitle").value, selectedAuthor, 
+        selectedGenre, document.getElementById("iSeries").value, document.getElementById("iRead").value,
+        document.getElementById("iBookKeywords").value, document.getElementById("iBookLocation").value,))
+}
 
+
+function createBookList(){
+    let bookList = document.getElementById("BookList");
+    bookList.innerHTML = "";
     
-// }
+    bookList.forEach(element => {
+        var bookLi = document.createElement('li');
+        bookLi.innerHTML = `${element.id}: ${element.firstName} ${element.lastName}`;
+        bookList.appendChild(bookLi);
+    });
+}
+
+console.log("bookArray", bookArray)

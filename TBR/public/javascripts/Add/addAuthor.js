@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(e){
 // TODO - edit for alter ego to not be entered
 //      - allow for keywords and alter ego to have array
         authorArray.push(new Author(document.getElementById("iFirstName").value, document.getElementById("iLastName").value, 
-        document.getElementById("iAlterego").value, document.getElementById("iAuthorKeywords").value))
+        iAlterEgo, document.getElementById("iAuthorKeywords").value))
         document.location.href = "index.html#view";
     })
 
