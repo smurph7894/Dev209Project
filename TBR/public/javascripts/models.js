@@ -5,7 +5,7 @@ const Book = function (pTitle, pAuthorID, pGenre, pSeries, pReadDate, pBookKeywo
     this.genre = pGenre;
     this.series = pSeries;
     this.readDate = pReadDate;
-    this.bookKeywords = pKeywords;
+    this.bookKeywords = pBookKeywords;
     this.location = pLocation;
 };
 
@@ -18,10 +18,9 @@ const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAut
     this.authorWebsite = pAuthorWebsite;
 };
 
-//make up data to use for front end that matches api
-//some things might changes once I build backend so check for discrepancies 
+// window.Book = Book;
 
-
+// window.Author = Author;
 
 // view main page
 // address - /books
