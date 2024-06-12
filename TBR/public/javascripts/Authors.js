@@ -1,3 +1,4 @@
+// ADD AUTHOR //
 const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAuthorWebsite){
     this.id = Math.random().toString(16).slice(5)
     this.firstName = pFirstName;
@@ -9,14 +10,15 @@ const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAut
 
 let authorArray = [];
 window.authorArray = authorArray;
-let alterEgoArray = [];
-let authorKeywordsArr = [];
+
+alterEgoArray = [""];
+authorKeywordsArr = [""];
 
 //Test inputs
 authorArray.push(new Author("AuthorFirst1", "AuthorLast1", ["Robert Frost"], ["Washington", "best seller"], "url.com"));
 authorArray.push(new Author("AuthorFirst2", "AuthorLast2", "", ["Washington"], "url.com"));
 authorArray.push(new Author("AuthorFirst3", "AuthorLast3", ["Haily Robert"], ["Washington", "best seller"], "url.com"));
-authorArray.push(new Author("AuthorFirst4", "AuthorLast4", ["No Name"], ["Washington", "best seller"], "url.com"));
+authorArray.push(new Author("Ralph", "Waldo", ["No Name"], ["Washington", "best seller"], "url.com"));
 
 //Add Author #addAuthor
 document.addEventListener("DOMContentLoaded", function(e){
@@ -35,19 +37,32 @@ document.addEventListener("DOMContentLoaded", function(e){
 
     document.addEventListener("change", function(e){
         if(e.target.id === "iAlterego"){
-            // alterEgoArray(e.target.value)
+           if(e.target.value != null){
             alterEgoArray = e.target.value.split(", ");
+           } else { 
+            alterEgoArray = [""];
+            }
         }
+        
         if(e.target.id === "iAuthorKeywords"){
-            // addAuthorKeywords(e.target.value);
-            authorKeywordsArr = e.target.value.split(", ");
+            if(e.target.value != null){
+                authorKeywordsArr = e.target.value.split(", ");
+            } else {
+                authorKeywordsArr = [""];
+            }
         }
     });
 
     // $(document).on("pagebeforeshow", "#view", function(e) {createAuthorList() })
+    console.log("authors", authorArray);
+    $(document).on("pagebeforeshow", "#add", function(e) {updateArray() })
 })
 
-authorArray.sort();
+function updateArray(){
+    authorArray.sort();
+    console.log("authors", authorArray);
+}
+
 
 // createAuthorList = () => {
 //     //clear old data 
@@ -59,5 +74,9 @@ authorArray.sort();
 //         authorLi.innerHTML = `${element.id}: ${element.firstName} ${element.lastName} ${element.alterEgos}`;
 //         authorList.appendChild(authorLi);
 //     });
-
 // }
+
+
+// VIEW AUTHOR //
+
+
