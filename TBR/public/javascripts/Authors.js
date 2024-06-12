@@ -8,6 +8,7 @@ const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAut
 };
 
 let authorArray = [];
+window.authorArray = authorArray;
 let alterEgoArray = [];
 let authorKeywordsArr = [];
 
@@ -43,18 +44,20 @@ document.addEventListener("DOMContentLoaded", function(e){
         }
     });
 
-    $(document).on("pagebeforeshow", "#view", function(e) {createAuthorList() })
+    // $(document).on("pagebeforeshow", "#view", function(e) {createAuthorList() })
 })
 
-createAuthorList = () => {
-    //clear old data 
-    let authorList = document.getElementById("AuthorList");
-    authorList.innerHTML = "";
+authorArray.sort();
 
-    authorArray.forEach(function(element,) {
-        var authorLi = document.createElement('li');
-        authorLi.innerHTML = `${element.id}: ${element.firstName} ${element.lastName} ${element.alterEgos}`;
-        authorList.appendChild(authorLi);
-    });
+// createAuthorList = () => {
+//     //clear old data 
+//     let authorList = document.getElementById("AuthorList");
+//     authorList.innerHTML = "";
 
-}
+//     authorArray.forEach(function(element,) {
+//         var authorLi = document.createElement('li');
+//         authorLi.innerHTML = `${element.id}: ${element.firstName} ${element.lastName} ${element.alterEgos}`;
+//         authorList.appendChild(authorLi);
+//     });
+
+// }
