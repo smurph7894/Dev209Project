@@ -11,7 +11,8 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <!-- <script src= "javascripts/models.js" > </script> -->
-    <script src="javascripts/Add/addBook.js"></script>
+    <script src="javascripts/Books.js"></script>
+    <script src="javascripts/Authors.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <!-- <link rel="stylesheet" href="themes/my-custom-theme.css" /> -->
 
@@ -124,7 +125,7 @@
                     <option value="historicalFiction">Historical Fiction</option>
                     <option value="horror">Horror</option>
                     <option value="nonFiction">nonFiction</option>
-                    <option value="mystery">Mystery/option>
+                    <option value="mystery">Mystery</option>
                     <option value="scienceFiction">Science Fiction</option>
                     <option value="romance">Romance</option>
                     <option value="thillerSuspense">Thiller/Suspense</option>
@@ -133,20 +134,13 @@
             </div>
             <br>
             <div>
-                <input type="checkbox" id="iSeries" value="true" name="iSeries">
                 <label>Is this book a part of a series?</label>
-                <!-- JS to controll sections appearing-->
                 <input type="text" id="iSeriesName" placeholder="Input series name here">
-                <!-- -->
             </div>
             <br>
             <div>
-                <input type="checkbox" id="iRead" value="true" name="iRead">
-                <label>Has this book been read?</label>
-                <!-- JS to controll sections appearing-->
-                    <label>Date Read:</label>
-                    <input type="date" id="iDateRead">
-                <!-- -->
+                <label>Date Read:</label>
+                <input type="date" id="iDateRead">
             </div>
             <div>
                 <label>Keywords:</label>
@@ -197,19 +191,16 @@
             </div>
             <br>
             <div>
-                <input type="checkbox" id="iAlterEgoBool" value="true" name="iAlterEgoBool">
-                <label>Does this author have alter egos?</label>
-                <!-- JS to controll sections appearing-->
+                <label>Alter Egos</label>
                 <input type="text" id="iAlterego" placeholder="Enter alter egos separated by a ,">
-                <button type="image">
-                    <img src="./images/plus.jpg" alt="plus symbol">
-                </button>
-                <!-- -->
-
             </div>           
             <div>
                 <label>Keywords:</label>
                 <input type="text" id="iAuthorKeywords" name="iAuthorKeywords" placeholder="separate keywords by a ,">
+            </div>
+            <div>
+                <label>Author Website:</label>
+                <input type="text" id="iAuthorWebsite" name="iAuthorWebsite">
             </div>
             <button id="submitAuthor" type="button" >Add</button> 
         </div>
@@ -250,8 +241,8 @@
             <h2>View</h2>
 
             <div class="ui-grid-b">
-                <ul>
-                    <li>
+                <ul id="mainViewList">
+                    <!-- <li>
                         <div class="ui-block-a">
                             <div class="ui-bar">Title</div>
                         </div>
@@ -267,10 +258,10 @@
                         <div class="ui-block-e">
                             <div class="ui-bar">Read</div>
                         </div>
-                    </li>
-                    <li>
+                    </li> -->
+                    <!-- <li> -->
                         <!--js to loop titles & info -->
-                        <div class="ui-block-a">
+                        <!-- <div class="ui-block-a">
                             <div class="ui-bar">
                                 <p><a href="#viewBook" type="text">Dune</a></p>
                             </div>
@@ -292,9 +283,9 @@
                         </div>
                         <div class="ui-block-e">
                             <div class="ui-bar">11/10/07</div>
-                        </div>
+                        </div> -->
                         <!-- -->
-                    </li>
+                    <!-- </li> -->
                 </ul>
             </div> 
         </div>

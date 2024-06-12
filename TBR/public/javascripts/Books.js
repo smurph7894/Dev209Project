@@ -1,3 +1,7 @@
+// HTML HELPER FUNCTIONS //
+
+
+// ADD BOOK //
 const Book = function (pTitle, pAuthorID, pGenre, pSeries, pReadDate, pBookKeywords, pLocation){
     this.id = Math.random().toString(16).slice(5)
     this.title = pTitle;
@@ -12,6 +16,7 @@ const Book = function (pTitle, pAuthorID, pGenre, pSeries, pReadDate, pBookKeywo
 let bookArray = [];
 let selectedGenre = "none selected";
 let selectedAuthor = "none selected";
+let bookKeywordArray = [""];
 
 
 //Test inputs
@@ -22,43 +27,46 @@ bookArray.push( new Book("Title 3", "AuthorId", "Genre6", "SeriesFancy", "2019-0
 
 //Add book #addBook
 document.addEventListener("DOMContentLoaded", function(e){
-    document.getElementById("submitBook").addEventListener("click", addBook);
-    document.location.href = "index.html#view";
-
+    document.getElementById("submitBook").addEventListener("click", function (){
+        bookArray.push( 
+            new Book(
+                document.getElementById("iTitle").value, 
+                selectedAuthor, 
+                selectedGenre, 
+                document.getElementById("iSeriesName").value, 
+                document.getElementById("iDateRead").value,
+                bookKeywordArray, 
+                document.getElementById("iBookLocation").value
+            )
+        );
+        document.location.href = "index.html#view";
+    });
+    
     document.addEventListener("change", function(e){
         if(e.target.id === "iGenre"){
             selectedGenre = e.target.value;
         }
-    })
-
-    document.addEventListener("change", function(e){
         if(e.target.id === "iAuthor"){
             selectedAuthor = e.target.value;
         }
-    })
+        if(e.target.id === "iBookKeywords"){
+            bookKeywordArray = e.target.value.split(", ");
+        }
+    });
 
-    $(document).on("pagebeforeshow", "#view", function(e){
-        createBookList()
-    })
+    $(document).on("pagebeforeshow", "#view", function(e){ createBookList() })
 });
 
 // TODO - work on selectAuthor
-function addBook(){
-    bookArray.push( new Book(document.getElementById("iTitle").value, selectedAuthor, 
-        selectedGenre, document.getElementById("iSeries").value, document.getElementById("iRead").value,
-        document.getElementById("iBookKeywords").value, document.getElementById("iBookLocation").value,))
-}
-
 
 function createBookList(){
-    let bookList = document.getElementById("BookList");
+    //clear old data
+    let bookList = document.getElementById("mainViewList");
     bookList.innerHTML = "";
     
-    bookList.forEach(element => {
+    bookArray.forEach(function(element,) {
         var bookLi = document.createElement('li');
-        bookLi.innerHTML = `${element.id}: ${element.firstName} ${element.lastName}`;
+        bookLi.innerHTML = `${element.id}: ${element.title} ${element.authorId} ${element.genre}`;
         bookList.appendChild(bookLi);
     });
 }
-
-console.log("bookArray", bookArray)
