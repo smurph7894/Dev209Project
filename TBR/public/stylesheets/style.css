@@ -10,6 +10,18 @@ ul {
     list-style-type: none;
 }
 
+.up-arrow {
+  cursor: pointer;
+  margin-bottom: -3px;
+}
+
+.down-arrow {
+  cursor: pointer;
+}
+.bookMainView{
+    color: red;
+}
+
 /*.page {
     display: flex !important;
     flex-direction: column;

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function(e){
                 document.getElementById('iAuthorWebsite').value
             )
         );
-        document.location.href = "index.html#view";
+        document.location.href = "index.html#add";
     });
 
     document.addEventListener("change", function(e){
@@ -52,31 +52,11 @@ document.addEventListener("DOMContentLoaded", function(e){
             }
         }
     });
-
-    // $(document).on("pagebeforeshow", "#view", function(e) {createAuthorList() })
-    console.log("authors", authorArray);
     $(document).on("pagebeforeshow", "#add", function(e) {updateArray() })
 })
 
 function updateArray(){
     authorArray.sort();
-    console.log("authors", authorArray);
 }
-
-
-// createAuthorList = () => {
-//     //clear old data 
-//     let authorList = document.getElementById("AuthorList");
-//     authorList.innerHTML = "";
-
-//     authorArray.forEach(function(element,) {
-//         var authorLi = document.createElement('li');
-//         authorLi.innerHTML = `${element.id}: ${element.firstName} ${element.lastName} ${element.alterEgos}`;
-//         authorList.appendChild(authorLi);
-//     });
-// }
-
-
-// VIEW AUTHOR //
 
 

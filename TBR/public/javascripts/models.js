@@ -17,16 +17,3 @@ const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAut
     this.authorKeywords = pAuthorKeywords;
     this.authorWebsite = pAuthorWebsite;
 };
-
-// window.Book = Book;
-
-// window.Author = Author;
-
-// view main page
-// address - /books
-
-//view book page
-// address - /book/id
-
-//view author page
-// address - /book/:bookId/author

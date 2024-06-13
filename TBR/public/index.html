@@ -11,8 +11,10 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <!-- <script src= "javascripts/models.js" > </script> -->
-    <script src="javascripts/Authors.js"></script>
+    <script src="javascripts/AddAuthors.js"></script>
     <script src="javascripts/Books.js"></script>
+    <script src="javascripts/Searches.js"></script>
+    <script src="javascripts/ViewAuthors.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <!-- <link rel="stylesheet" href="themes/my-custom-theme.css" /> -->
 
@@ -121,7 +123,7 @@
                     <option value="graphicNovel">Graphic Novel</option>
                     <option value="historicalFiction">Historical Fiction</option>
                     <option value="horror">Horror</option>
-                    <option value="nonFiction">nonFiction</option>
+                    <option value="nonFiction">Non-Fiction</option>
                     <option value="mystery">Mystery</option>
                     <option value="scienceFiction">Science Fiction</option>
                     <option value="romance">Romance</option>
@@ -131,7 +133,7 @@
             </div>
             <br>
             <div>
-                <label>Is this book a part of a series?</label>
+                <label>Series Name</label>
                 <input type="text" id="iSeriesName" placeholder="Input series name here">
             </div>
             <br>
@@ -145,7 +147,7 @@
             </div>
             <div>
                 <label>Book Location:</label>
-                <input type="text" id="iBookLocation" name="iBookLocation" placeholder="i.e. Kindle link, Library name">
+                <input type="url" id="iBookLocation" name="iBookLocation" placeholder="i.e. Kindle or Library url">
             </div>
             <button id="submitBook" type="button" >Add</button> 
         </div>
@@ -236,12 +238,8 @@
         <!-- content -->
         <div data-role="content" data-theme='a'>
             <h2>View</h2>
-
             <div class="ui-grid-b">
-                <ul id="authorList"></ul>
-                <ul id="mainViewList">
-                    
-                </ul>
+                <ul id="mainViewList"></ul>
             </div> 
         </div>
 
@@ -272,34 +270,7 @@
 
         <!-- content -->
         <div data-role="content" data-theme='a'>
-            <!--JS to connect to correct book, example for now-->
-            <h2>Dune</h2>
-            <div>
-                <p>Author</p>
-                <p><a href="#viewAuthor">Frank Herbert</a></p>
-            </div>
-            <div>
-                <p>Genre</p>
-                <p>SciFi</p>
-            </div>
-            <div>
-                <p>Series Title</p>
-                <p>Series Name</p>
-            </div>
-            <div>
-                <p>Date Read</p>
-                <p>11/10/17</p>
-            </div>
-            <div>
-                <p>Keywords</p>
-                <p>Sand, Dust</p>
-            </div>
-            <div>
-                <p>Book Location</p>
-                <p><a href="https://www.amazon.com/b/?node=6669702011&tag=mh0b-20&hvadid=78546568761871&hvqmt=e&hvbmt=be&hvdev=c&ref=pd_sl_6itck04ygx_e">Kindle Location</a></p>
-            </div>
-            <!---->
-            <!-- removing edit/adding additonal info ability -->
+            <p id="viewBookContent"></p>
         </div>
         <!-- -->
 
@@ -330,29 +301,7 @@
 
         <!-- content -->
         <div data-role="content" data-theme='a'>
-            <!--JS to connect to correct author, example for now-->
-            <h2>Frank Herbert</h2>
-            <div>
-                <p>Title</p>
-                <p><a href="#viewbook">Dune</a></p>
-            </div>
-            <div>
-                <p>Alter Egos</p>
-                <p>Fred</p>
-            </div>
-            <div>
-                <p>Series Title</p>
-                <p>Series Name</p>
-            </div>
-            <div>
-                <p>Keywords</p>
-                <p>Washington</p>
-            </div>
-            <div>
-                <p>Author Website</p>
-                <p><a href="https://dunenovels.com/frank-herbert/">https://dunenovels.com/frank-herbert/</a></p>
-            </div>
-            <!--removing ability to edit author -->
+            <p id="viewAuthorContent"></p>
         </div>
         <!-- -->
 
@@ -391,45 +340,13 @@
             <div class="searchBar">
                 <h2>Keyword Search</h2>
                 <div>
-                    <input type="text" id="iSearchWords" name="iSearchWords">
+                    <input type="text" id="iSearchWords" placeholder="Separate search terms by ,">
                     <button type="button" id="searchButton">Search</h2>
                 </div>
             </div>
             
-            <!-- js to have this section appear after search button selected-->
-            <div class="ui-grid-b">
-                <ul>
-                    <li>
-                        <div class="ui-block-a">
-                            <div class="ui-bar">Title</div>
-                        </div>
-                        <div class="ui-block-b">
-                            <div class="ui-bar">Author</div>
-                        </div>
-                        <div class="ui-block-c">
-                            <div class="ui-bar">Keywords</div>
-                        </div>
-                    </li>
-                    <li>
-                        <!--js to loop titles & info -->
-                        <div class="ui-block-a">
-                            <div class="ui-bar">
-                                <p><a href="#viewBook" type="text">Dune</a></p>
-                            </div>
-                        </div>
-                        <div class="ui-block-b">
-                            <div class="ui-bar">
-                                <div class="ui-bar">
-                                    <p><a href="#viewAuthor" type="text">Frank Herbert</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-block-c">
-                            <div class="ui-bar">Sand</div>
-                        </div>
-                        <!-- -->
-                    </li>
-                </ul>
+            <div class="ui-grid-b" >
+                <ul id="searchResults"></ul>
             </div> 
         </div>
         <!-- -->
