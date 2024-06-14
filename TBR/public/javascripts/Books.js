@@ -19,16 +19,14 @@ $(document).on("pagebeforeshow", "#viewBook", function(e){
  });
 
 // HTML HELPER FUNCTIONS //
-let authors = window.authorArray;
-    
 function pullAuthors(){
     let authorList = document.getElementById("iAuthor");
     authorList.innerHTML=""
 
-    for(let i=0; i<authors.length; i++){
+    for(let i=0; i<locStorAuthorArray.length; i++){
         const option = document.createElement("option");
-        option.text = `${authors[i].firstName} ${authors[i].lastName}`;
-        option.value = authors[i];
+        option.text = `${locStorAuthorArray[i].firstName} ${locStorAuthorArray[i].lastName}`;
+        option.value = i;
         authorList.add(option, authorList[i]);
     }
 };
@@ -56,6 +54,12 @@ window.addEventListener("hashchange", function(e) {
 
 //Add book #addBook
 document.addEventListener("DOMContentLoaded", function(e){
+    $.get("/GetAllAuthors", function(data, status){
+        authorArray=data;
+        stringAuthorArray = JSON.stringify(authorArray);
+        localStorage.setItem("authorArray", stringAuthorArray);
+        locStorAuthorArray = JSON.parse(localStorage.getItem('authorArray'));
+    });
     let selectedGenre = "none selected";
     let selectedAuthor = {};
     let bookKeywordArray = [""];
@@ -90,7 +94,8 @@ document.addEventListener("DOMContentLoaded", function(e){
             selectedGenre = e.target.value;
         }
         if(e.target.id === "iAuthor"){
-            selectedAuthor = e.target.value;
+            selectedAuthor = locStorAuthorArray[e.target.value];
+            console.log(selectedAuthor)
         }
         if(e.target.id === "iBookKeywords"){
             bookKeywordArray = e.target.value.split(", ");
@@ -105,6 +110,7 @@ function createBookList(){
         stringBookArray = JSON.stringify(bookArray);
         localStorage.setItem("bookArray", stringBookArray);
         locStorBookArray = JSON.parse(localStorage.getItem('bookArray'));
+        console.log(JSON.stringify(locStorBookArray))
 
         let bookList = document.getElementById("mainViewList");
         bookList.innerHTML = `<li>

@@ -9,9 +9,8 @@ function createAuthorView(){
     let foundParm = false;
     let count = 0;
     let bookElement;
-    let keyWordsDiv;
-    let alterEgo;
     while(!foundParm){
+        console.log(authorId)
         if(locStorBookArray[count].author.id === authorId){
             bookElement = locStorBookArray[count];
             foundParm = true;

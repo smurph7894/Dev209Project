@@ -11,7 +11,6 @@ const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAut
 };
 
 let authorArray = [];
-window.authorArray = authorArray;
 
 alterEgoArray = [""];
 authorKeywordsArr = [""];

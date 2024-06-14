@@ -72,6 +72,9 @@ function GetArrayPointer(localId, arr){
 };
 module.exports = router;
 
+console.log("book", serverArray);
+console.log("author", serverAuthorArray);
+
 // router.delete('/DeleteBook/:Id', function(req, res) {
 //   const bookId = req.params.id;
 //   let found = false;
