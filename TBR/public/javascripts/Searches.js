@@ -1,16 +1,35 @@
 $(document).on("pagebeforeshow", "#search", function(e){ });
+$(document).on("pagebeforeshow", "#viewBook", function(e){ 
+    bookId = localStorage.getItem('parm');
+    authorId = localStorage.getItem("parm-author");
+    createBookView();
+ });
+
+ $(document).on("pagebeforeshow", "#viewAuthor", function(e){ 
+    bookId = localStorage.getItem('parm');
+    authorId = localStorage.getItem("parm-author");
+    locStorBookArray = JSON.parse(localStorage.getItem('bookArray'));
+    createAuthorView();
+});
 
 // GLOBAL VARIABLES //
-let sBookArray = window.bookArray;
-let sAuthorArray = window.authorArray;
+locStorBookArray = JSON.parse(localStorage.getItem('bookArray'));
+let locStorAuthorArray;
 let searchArray;
 
 //  SEARCH //
 document.addEventListener("DOMContentLoaded", function(e){
-    document.getElementById("searchButton").addEventListener("click", function (){
-        findSearch();
-        viewSearch();
-    })
+    $.get("/GetAllAuthors", function(data, status){
+        authorArray=data;
+        stringAuthorArray = JSON.stringify(authorArray);
+        localStorage.setItem("authorArray", stringAuthorArray);
+        locStorAuthorArray = JSON.parse(localStorage.getItem('authorArray'));
+
+        document.getElementById("searchButton").addEventListener("click", function (){
+            findSearch();
+            viewSearch();
+        })
+    });
 });
     
 function viewSearch(){
@@ -31,7 +50,7 @@ function viewSearch(){
                             </div>
                         </li>`;
     
-    bookArray.forEach(function(element) {
+    searchArray.forEach(function(element) {
         const resultLi = document.createElement('li');
         let keywords;
         let title;
@@ -74,25 +93,25 @@ function viewSearch(){
 
     //Title Arrows
     document.getElementById("buttonSortTitleUp").addEventListener("click", function() {
-        bookArray.sort(dynamicSortUp("title"));
-        createBookList();
-        document.location.href="index.html#view";
+        locStorBookArray.sort(dynamicSortUp("title"));
+        viewSearch();
+        document.location.href="index.html#search";
     });
     document.getElementById("buttonSortTitleDown").addEventListener("click", function() {
-        bookArray.sort(dynamicSortDown("title"));
-        createBookList();
-        document.location.href="index.html#view";
+        locStorBookArray.sort(dynamicSortDown("title"));
+        viewSearch();
+        document.location.href="index.html#search";
     })
     //Author Arrows
     document.getElementById("buttonSortAuthorUp").addEventListener("click", function() {
-        bookArray.sort((a, b) => `${a.author.firstName} ${a.author.lastName}`.localeCompare(`${b.author.firstName} ${b.author.lastName}`));
-        createBookList();
-        document.location.href="index.html#view";
+        locStorBookArray.sort((a, b) => `${a.author.firstName} ${a.author.lastName}`.localeCompare(`${b.author.firstName} ${b.author.lastName}`));
+        viewSearch();
+        document.location.href="index.html#search";
     });
     document.getElementById("buttonSortAuthorDown").addEventListener("click", function() {
-        bookArray.sort((a, b) => `${b.author.firstName} ${b.author.lastName}`.localeCompare(`${a.author.firstName} ${a.author.lastName}`));
-        createBookList();
-        document.location.href="index.html#view";
+        locStorBookArray.sort((a, b) => `${b.author.firstName} ${b.author.lastName}`.localeCompare(`${a.author.firstName} ${a.author.lastName}`));
+        viewSearch();
+        document.location.href="index.html#search";
     });
 
     let individualBooksList = document.getElementsByClassName("searchEntries");
@@ -129,23 +148,33 @@ function dynamicSortDown(property){
 
 function findSearch(){
     let input = document.getElementById('iSearchWords').value;
-    let regexes = input.split(',').map(regex => new RegExp(regex.trim()));
+    let regexes = input.split(',').map(regex => new RegExp(regex.trim(), "i"));
+    console.log("reg", regexes)
 
     let result = [];
 
     for (let regexSearch of regexes) {
-        result.push(...sBookArray.filter(obj => regexSearch.test(obj.title) || regexSearch.test(obj.author.firstName) ||  
-        regexSearch.test(obj.author.lastName) || regexSearch.test(obj.author.alterEgos) || regexSearch.test(obj.author.authorKeyWords)
-        || regexSearch.test(obj.genre) || regexSearch.test(obj.series) || regexSearch.test(obj.bookKeywords) || 
-        regexSearch.test(obj.location).map(
-            obj => ({...obj, type: "book"})
-        )));
+        result.push(...locStorBookArray.filter(
+            obj => regexSearch.test(obj.title) || 
+            regexSearch.test(obj.author.firstName) ||  
+            regexSearch.test(obj.author.lastName) || 
+            obj.author.alterEgos?.some(e => regexSearch.test(e) ) ||
+            obj.author.authorKeywords?.some(e => regexSearch.test(e) ) ||
+            regexSearch.test(obj.genre) || 
+            regexSearch.test(obj.series) || 
+            obj.bookKeywords?.some(e => regexSearch.test(e) ) ||
+            regexSearch.test(obj.location))
+            .map( obj => ({...obj, type: "book"}) ));
         
-        result.push(...sAuthorArray.filter(obj => regexSearch.test(obj.firstName) || regexSearch.test(obj.lastName) ||
-        regexSearch.test(obj.alterEgos) || regexSearch.test(obj.authorKeyWords) || regexSearch.test(obj.authorWebsite).map(
-            obj => ({...obj, type: "book"})
-        )));
+        result.push(...locStorAuthorArray.filter(
+            obj => regexSearch.test(obj.firstName) || 
+            regexSearch.test(obj.lastName) ||
+            obj.alterEgos?.some(e => regexSearch.test(e) ) || 
+            obj.authorKeywords?.some(e => regexSearch.test(e) ) ||
+            regexSearch.test(obj.authorWebsite))
+            .map( obj => ({...obj, type: "author"}) ));
     }
-
     searchArray = result;
+
+    console.log(searchArray);
 };

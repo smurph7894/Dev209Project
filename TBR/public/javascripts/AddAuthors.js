@@ -1,4 +1,6 @@
 // ADD AUTHOR //
+$(document).on("pagebeforeshow", "#add", function(e) {updateArray() })
+
 const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAuthorWebsite){
     this.id = Math.random().toString(16).slice(5)
     this.firstName = pFirstName;
@@ -14,24 +16,31 @@ window.authorArray = authorArray;
 alterEgoArray = [""];
 authorKeywordsArr = [""];
 
-//Test inputs
-authorArray.push(new Author("AuthorFirst1", "AuthorLast1", ["Robert Frost"], ["Washington", "best seller"], "url.com"));
-authorArray.push(new Author("AuthorFirst2", "AuthorLast2", "", ["Washington"], "url.com"));
-authorArray.push(new Author("AuthorFirst3", "AuthorLast3", ["Haily Robert"], ["Washington", "best seller"], "url.com"));
-authorArray.push(new Author("Ralph", "Waldo", ["No Name"], ["Washington", "best seller"], "url.com"));
-
 //Add Author #addAuthor
 document.addEventListener("DOMContentLoaded", function(e){
     document.getElementById("submitAuthor").addEventListener("click", function(){
-        authorArray.push(
-            new Author(
-                document.getElementById("iFirstName").value, 
-                document.getElementById("iLastName").value, 
-                alterEgoArray, 
-                authorKeywordsArr, 
-                document.getElementById('iAuthorWebsite').value
-            )
+        let newAuthor = new Author(
+            document.getElementById("iFirstName").value, 
+            document.getElementById("iLastName").value, 
+            alterEgoArray, 
+            authorKeywordsArr, 
+            document.getElementById('iAuthorWebsite').value
         );
+
+        $.ajax({
+            url: "/AddAuthor",
+            type: "POST",
+            data: JSON.stringify(newAuthor),
+            contentType: "application/json;charset=utf-8",
+            success: function(result){
+              document.location.href = "index.html#view";
+            },
+            error: function (xhr, textStatus, errorThrown){
+              alert($`Server could not add book ${newAuthor.lastName}.`);
+              alert($`${textStatus} ${errorThrown}`)
+            }
+        });
+
         document.location.href = "index.html#add";
     });
 
@@ -52,11 +61,10 @@ document.addEventListener("DOMContentLoaded", function(e){
             }
         }
     });
-    $(document).on("pagebeforeshow", "#add", function(e) {updateArray() })
-})
+});
 
 function updateArray(){
     authorArray.sort();
-}
+};
 
 

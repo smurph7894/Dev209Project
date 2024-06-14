@@ -22,6 +22,9 @@ ul {
     color: red;
 }
 
+#homeBackground{
+  background-image: url('../images/bookStack.jpg');
+}
 /*.page {
     display: flex !important;
     flex-direction: column;
