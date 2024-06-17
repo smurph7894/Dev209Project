@@ -1,9 +1,29 @@
 body {
     text-align:center;
     margin: 0 auto;
-    width: 670px;
-    border: 3px solid rgb(255, 0, 179);
-    padding: 0 2em 1em;
+}
+
+.homeTitle {
+  margin: 0rem;
+  padding-top: 14rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  font-size: 3.25rem;
+  color: white;
+  text-align: center;
+  text-shadow: .25rem .25rem black;
+}
+
+.homeSubTitle {
+  margin: 0rem;
+  padding-top: 1rem;
+  padding-bottom: 30rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  font-size: 3rem;
+  color: white;
+  text-align: center;
+  text-shadow: .25rem .25rem black;
 }
 
 ul {
@@ -11,56 +31,76 @@ ul {
 }
 
 .up-arrow {
-  cursor: pointer;
-  margin-bottom: -3px;
+  cursor: pointer !important;
 }
 
 .down-arrow {
-  cursor: pointer;
+  cursor: pointer !important;
+  margin-top: -8px !important;
 }
 .bookMainView{
-    color: red;
+    color: black;
 }
 
-#homeBackground{
-  background-image: url('../images/bookStack.jpg');
-}
-/*.page {
-    display: flex !important;
-    flex-direction: column;
+.page {
     height: 100vh;
     width: 100vw;
-    align-items: flex-start;
 }
 
-.header {
-    
+.tableHeader {
+  display: flex;
+  flex-direction: row;
+  font-size: 1rem;
+  padding: .25rem;
 }
 
-.title {
+.headerCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .25rem
+}
+
+.tableView{
+ padding: 0;
+ margin: auto;
+ display: flex;
+ justify-content: center;
 
 }
 
-.content {
-    
+.tableData{
+  font-size: .75rem;
+  padding: .3rem;
+  border: 1px solid #2f2d2d;
 }
 
-.footer {
+.tableBar{
+  background-color: #5fbdfb;
+}
+
+.subViewInfo{
+  display: flex;
+  flex-direction: row;
+  text-align: start;
+  margin-left: 2rem;
 
 }
 
-#homeBackground {
-    background-image: url("/images/bookStack.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: contain;
-    object-fit: cover;
+.subViewCol {
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
 }
 
-.homeTitle {
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: bolder;
+.subViewTable{
+ display: flex;
+ flex-wrap: wrap;
+ margin-left: 3rem;
 }
 
-*/
+.subViewBook{
+  display: flex;
+  flex-direction: column;
+}
+

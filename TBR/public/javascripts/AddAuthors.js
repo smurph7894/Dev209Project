@@ -1,6 +1,4 @@
 // ADD AUTHOR //
-$(document).on("pagebeforeshow", "#add", function(e) {updateArray() })
-
 const Author = function(pFirstName, pLastName, pAlterEgos, pAuthorKeywords, pAuthorWebsite){
     this.id = Math.random().toString(16).slice(5)
     this.firstName = pFirstName;
@@ -32,13 +30,19 @@ document.addEventListener("DOMContentLoaded", function(e){
             data: JSON.stringify(newAuthor),
             contentType: "application/json;charset=utf-8",
             success: function(result){
-              document.location.href = "index.html#view";
+              document.location.href = "index.html#add";
             },
             error: function (xhr, textStatus, errorThrown){
               alert($`Server could not add book ${newAuthor.lastName}.`);
               alert($`${textStatus} ${errorThrown}`)
             }
         });
+
+        document.getElementById("iFirstName").value = ""; 
+        document.getElementById("iLastName").value = "";
+        document.getElementById("iAlterego").value ="";
+        document.getElementById("iAuthorKeywords").value ="";
+        document.getElementById("iAuthorWebsite").value = "";
 
         document.location.href = "index.html#add";
     });
@@ -62,8 +66,6 @@ document.addEventListener("DOMContentLoaded", function(e){
     });
 });
 
-function updateArray(){
-    authorArray.sort();
-};
+
 
 

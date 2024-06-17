@@ -23,22 +23,23 @@
 <body>
     <!-- ======================================================================================== -->
     <!--HOME-->
-    <div class="page" data-role="page" id="home" data-theme='a'>
+    <div class="page" data-role="page" id="home"  data-theme='b'>
         
         <!-- header --> 
-        <div class="header" data-position="fixed" data-role="header" data-theme='a'>
+        <div class="header" data-position="fixed" data-role="header" data-theme='b'>
             <h1 class="title">TBR</h1>
         </div>  
         <!-- -->
 
         <!-- content -->
-        <div class="content" id="homeBackground">
-            <p class="homeTitle">Reading List Tracker</p>
+        <div class="homeBackground" class="content" data-fullscreen="true" data-theme='b'>
+            <h1 class="homeTitle">TBR</h1>
+            <h2 class="homeSubTitle">Your Reading List Tracker</h2>
         </div>
         <!-- -->
 
         <!-- footer --> 
-        <div class="footer" data-position="fixed" data-role="footer" data-theme='a'>
+        <div class="footer" data-position="fixed" data-role="footer" data-theme='b'>
             <div class="navbar" data-role="navbar">
                 <ul>
                 <li><a href="#add" data-transition="flip">Add</a></li>
@@ -55,7 +56,7 @@
 
    <!-- ======================================================================================== -->
    <!-- ADD -->
-   <!-- =================================== -->view
+   <!-- =================================== -->
    <!-- ADD-main -->
     <div data-role="page" id="add" data-theme='a'>
         
@@ -67,10 +68,10 @@
 
         <!-- content -->
         <div data-role="content" data-theme='a'>
-            <h2> Add an author or your next read!</h2>
+            <h2 data-theme='a'> Add an author or your next read!</h2>
 
-                <a href="#addBook" id="buttonAddBook" type="button">Add Book</a>  <br />
-                <a href="#addAuthor" id="buttonAddAuthor" type="button">Add Author</a>  <br />
+                <input id="buttonAddBook" type="button" value="Add Book"/>  <br />
+                <input id="buttonAddAuthor" type="button" value="Add Author"/>  <br />
         </div>
         <!-- -->
 
@@ -100,56 +101,65 @@
         <!-- -->
 
         <!-- content -->
-        <div data-role="content" data-theme='a'>
-            <h2> Add a Book</h2>
-            <div>
-                <label>Title:</label>
-                <input type="text" id="iTitle">     
-            </div>
-            <div>
-                <label>Author:</label>
-                <select name="author" id="iAuthor">
-                </select>     
-            </div>
-            <div>
-                <label>Genre:</label>
-                <select type="genre" id="iGenre">
-                    <option value="action-Adventure">Action-Adventure</option>
-                    <option value="childrens">Children's</option>
-                    <option value="contemporaryFiction">Contemporary Fiction</option>
-                    <option value="fantasy">Fantasy</option>
-                    <option value="fiction">Fiction</option>
-                    <option value="graphicNovel">Graphic Novel</option>
-                    <option value="historicalFiction">Historical Fiction</option>
-                    <option value="horror">Horror</option>
-                    <option value="nonFiction">Non-Fiction</option>
-                    <option value="mystery">Mystery</option>
-                    <option value="scienceFiction">Science Fiction</option>
-                    <option value="romance">Romance</option>
-                    <option value="thillerSuspense">Thiller/Suspense</option>
-                    <option value="youngAdult">Young Adult</option>
-                </select>     
-            </div>
-            <br>
-            <div>
-                <label>Series Name</label>
-                <input type="text" id="iSeriesName" placeholder="Input series name here">
-            </div>
-            <br>
-            <div>
-                <label>Date Read:</label>
-                <input type="date" id="iDateRead">
-            </div>
-            <div>
-                <label>Keywords:</label>
-                <input type="text" id="iBookKeywords" name="iBookKeywords" placeholder="separate keywords by a ,">
-            </div>
-            <div>
-                <label>Book Location:</label>
-                <input type="url" id="iBookLocation" name="iBookLocation" placeholder="i.e. Kindle or Library url">
-            </div>
-            <button id="submitBook" type="button" >Add</button> 
-        </div>
+        <div data-role="content" class="ui-field-contain" data-theme='a' >
+            <form id="bookForm">
+                <h2> Add a Book</h2>
+                <div>
+                    <label>Title:</label>
+                    <input type="text" id="iTitle" value="">     
+                </div>
+                <div>
+                    <label>Author:</label>
+                    <select id="iAuthor" >
+                    </select>     
+                </div>
+                <div>
+                    <label>Genre:</label>
+                    <select id="iGenre" >
+                        <option id="defaultGenre" selected="selected" value="Action-Adventure">Action-Adventure</option>
+                        <option value="Childrens">Children's</option>
+                        <option value="Contemporary Fiction">Contemporary Fiction</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Graphic Novel">Graphic Novel</option>
+                        <option value="Historical Fiction">Historical Fiction</option>
+                        <option value="Horror">Horror</option>
+                        <option value="NonFiction">Non-Fiction</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Thiller Suspense">Thiller/Suspense</option>
+                        <option value="Young Adult">Young Adult</option>
+                    </select>     
+                </div>
+                <br>
+                <div>
+                    <label>Series Name</label>
+                    <input type="text" id="iSeriesName" value="" placeholder="Input series name here">
+                </div>
+                <br>
+                <div>
+                    <label>Date Read:</label>
+                    <input type="date" id="iDateRead" value="">
+                </div>
+                <div>
+                    <label>Keywords:</label>
+                    <input type="text" id="iBookKeywords" name="iBookKeywords" value="" placeholder="separate keywords by a ,">
+                </div>
+                <div>
+                    <label>Book Location:</label>
+                    <input type="url" id="iBookLocation" name="iBookLocation" value="" placeholder="i.e. Kindle or Library url">
+                </div>
+                    <button id="submitBook" type="button" >Add</button> 
+                    <button type="reset" id="reset" >Reset</button>
+                </div>
+            </form>
+
+            <!-- <script>
+                var input = $( "#reset" ).css( {
+                display: "none"
+                } );
+            </script> -->
         <!-- -->
 
         <!-- footer --> 
@@ -181,24 +191,24 @@
             <h2> Add an Author</h2>
             <div>
                 <label>First Name:</label>
-                <input type="text" id="iFirstName">     
+                <input type="text" id="iFirstName" value="">     
             </div>
             <div>
                 <label>Last Name:</label>
-                <input type="text" id="iLastName">     
+                <input type="text" id="iLastName" value="">     
             </div>
             <br>
             <div>
                 <label>Alter Egos</label>
-                <input type="text" id="iAlterego" placeholder="Enter alter egos separated by a ,">
+                <input type="text" id="iAlterego" value="" placeholder="Enter alter egos separated by a ,">
             </div>           
             <div>
                 <label>Keywords:</label>
-                <input type="text" id="iAuthorKeywords" name="iAuthorKeywords" placeholder="separate keywords by a ,">
+                <input type="text" id="iAuthorKeywords" value="" name="iAuthorKeywords" placeholder="separate keywords by a ,">
             </div>
             <div>
                 <label>Author Website:</label>
-                <input type="text" id="iAuthorWebsite" name="iAuthorWebsite">
+                <input type="text" id="iAuthorWebsite" value="" name="iAuthorWebsite">
             </div>
             <button id="submitAuthor" type="button" >Add</button> 
         </div>
@@ -235,11 +245,11 @@
         <!-- -->
 
         <!-- content -->
-        <div data-role="content" data-theme='a'>
+        <div data-role="content" data-theme='a' >
             <h2>View</h2>
-            <div class="ui-grid-b">
-                <ul id="mainViewList"></ul>
-            </div> 
+            <div class="tableView">
+                <table id="mainViewTable"></table>
+            </div>
         </div>
 
         <!-- footer --> 
@@ -344,8 +354,8 @@
                 </div>
             </div>
             
-            <div class="ui-grid-b" >
-                <ul id="searchResults"></ul>
+            <div class="tableView">
+                <table id="searchResults"></table>
             </div> 
         </div>
         <!-- -->

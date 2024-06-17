@@ -5,16 +5,28 @@ let authorId;
 let bookIdParmArray;
 let locStorBookArray;
 let authorIdParmArray;
+let lsAuthorArray;
 
 // PAGE BEFORE SHOW //
-$(document).on("pagebeforeshow", "#home", function(e){ createBookList() });
-$(document).on("pagebeforeshow", "#add", function(e){ });
-$(document).on("pagebeforeshow", "#addBook", function(e){ });
+$(document).on("pagebeforeshow", "#home", function(e){ 
+    createBookList() 
+});
+$(document).on("pagebeforeshow", "#add", function(e){ 
+    updateArray();
+    lsAuthorArray = JSON.parse(localStorage.getItem('authorArray'));;
+});
 $(document).on("pagebeforeshow", "#addAuthor", function(e){ });
-$(document).on("pagebeforeshow", "#view", function(e){ createBookList() });
+$(document).on("pagebeforeshow", "#addBook", function(e){ 
+    lsAuthorArray = JSON.parse(localStorage.getItem('authorArray'));
+    pullAuthors();
+});
+$(document).on("pagebeforeshow", "#view", function(e){ 
+    createBookList() 
+});
 $(document).on("pagebeforeshow", "#viewBook", function(e){ 
     bookId = localStorage.getItem('parm');
     authorId = localStorage.getItem("parm-author");
+    bookArray = JSON.parse(localStorage.getItem('bookArray'));
     createBookView();
  });
 
@@ -22,10 +34,13 @@ $(document).on("pagebeforeshow", "#viewBook", function(e){
 function pullAuthors(){
     let authorList = document.getElementById("iAuthor");
     authorList.innerHTML=""
-
-    for(let i=0; i<locStorAuthorArray.length; i++){
+    for(let i=0; i<lsAuthorArray.length; i++){        
         const option = document.createElement("option");
-        option.text = `${locStorAuthorArray[i].firstName} ${locStorAuthorArray[i].lastName}`;
+        option.text = `${lsAuthorArray[i].firstName} ${lsAuthorArray[i].lastName}`;
+        if(i===0){
+            option.selected = "true";
+            option.id = "defaultAuthor";
+        };
         option.value = i;
         authorList.add(option, authorList[i]);
     }
@@ -45,6 +60,25 @@ const Book = function (pTitle, pAuthor, pGenre, pSeries, pReadDate, pBookKeyword
   };
 
 // ADD BOOK //
+function updateArray(){
+    $.get("/GetAllAuthors", function(data, status){
+        authorArray=data;
+        authorArray.sort();
+        stringAuthorArray = JSON.stringify(authorArray);
+        localStorage.setItem("authorArray", stringAuthorArray);
+        locStorAuthorArray = JSON.parse(localStorage.getItem('authorArray'));
+    })
+};
+
+document.addEventListener("DOMContentLoaded", function(e){
+    document.getElementById("buttonAddBook").addEventListener("click", function() {
+        document.location.href="index.html#addBook";
+    });
+    document.getElementById("buttonAddAuthor").addEventListener("click", function() {
+        document.location.href="index.html#addAuthor";
+    });
+});
+
 window.addEventListener("hashchange", function(e) {
     const hash = location.hash;
     if(hash === `#addBook`){
@@ -54,12 +88,6 @@ window.addEventListener("hashchange", function(e) {
 
 //Add book #addBook
 document.addEventListener("DOMContentLoaded", function(e){
-    $.get("/GetAllAuthors", function(data, status){
-        authorArray=data;
-        stringAuthorArray = JSON.stringify(authorArray);
-        localStorage.setItem("authorArray", stringAuthorArray);
-        locStorAuthorArray = JSON.parse(localStorage.getItem('authorArray'));
-    });
     let selectedGenre = "none selected";
     let selectedAuthor = {};
     let bookKeywordArray = [""];
@@ -87,6 +115,11 @@ document.addEventListener("DOMContentLoaded", function(e){
             }
         });
 
+        document.getElementById("iTitle").value=""; 
+        document.getElementById("iSeriesName").value="";  
+        document.getElementById("iDateRead").value=""; 
+        document.getElementById("iBookKeywords").value="";  
+        document.getElementById("iBookLocation").value=""; 
     });
     
     document.addEventListener("change", function(e){
@@ -95,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function(e){
         }
         if(e.target.id === "iAuthor"){
             selectedAuthor = locStorAuthorArray[e.target.value];
-            console.log(selectedAuthor)
         }
         if(e.target.id === "iBookKeywords"){
             bookKeywordArray = e.target.value.split(", ");
@@ -104,137 +136,137 @@ document.addEventListener("DOMContentLoaded", function(e){
 });
 
 //  VIEW MAIN //
-function createBookList(){ 
+function createBookList(sortFn = dynamicSortUp("title")){ 
     $.get("/GetAllBooks", function(data, status){
         bookArray=data;
+        bookArray.sort(sortFn);
         stringBookArray = JSON.stringify(bookArray);
         localStorage.setItem("bookArray", stringBookArray);
         locStorBookArray = JSON.parse(localStorage.getItem('bookArray'));
-        console.log(JSON.stringify(locStorBookArray))
 
-        let bookList = document.getElementById("mainViewList");
-        bookList.innerHTML = `<li>
-                                <div class="ui-block-a">
-                                    <div class="ui-bar">Title</div>
-                                    <div class="up-arrow" id="buttonSortTitleUp"> &#9650; </div>
-                                    <div class="down-arrow" id="buttonSortTitleDown"> &#9660;</div>
-                                </div>
-                                <div class="ui-block-b">
-                                    <div class="ui-bar">Author</div>
-                                    <div class="up-arrow" id="buttonSortAuthorUp"> &#9650; </div>
-                                    <div class="down-arrow" id="buttonSortAuthorDown"> &#9660;</div>
-                                </div>
-                                <div class="ui-block-c">
-                                    <div class="ui-bar">Genre</div>
-                                    <div class="up-arrow" id="buttonSortGenreUp"> &#9650; </div>
-                                    <div class="down-arrow" id="buttonSortGenreDown"> &#9660;</div>
-                                </div>
-                                <div class="ui-block-d">
-                                    <div class="ui-bar">Series</div>
-                                    <div class="up-arrow" id="buttonSortSeriesUp"> &#9650; </div>
-                                    <div class="down-arrow" id="buttonSortSeriesDown"> &#9660;</div>
-                                </div>
-                                <div class="ui-block-e">
-                                    <div class="ui-bar">Read</div>
-                                    <div class="up-arrow" id="buttonSortReadUp"> &#9650; </div>
-                                    <div class="down-arrow" id="buttonSortReadDown"> &#9660;</div>
-                                </div>
-                            </li>`;
+        let bookList = document.getElementById("mainViewTable");
+        bookList.innerHTML =`<thead class="tableBar">
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Title</div>
+                                        <div class="arrows">
+                                            <div class="up-arrow" id="buttonSortTitleUp"> &#9652; </div>
+                                            <div class="down-arrow" id="buttonSortTitleDown"> &#9662;</div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Author</div>
+                                        <div> 
+                                            <div class="up-arrow" id="buttonSortAuthorUp"> &#9652; </div>
+                                            <div class="down-arrow" id="buttonSortAuthorDown"> &#9662;</div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Genre</div>
+                                        <div> 
+                                            <div class="up-arrow" id="buttonSortGenreUp"> &#9652; </div>
+                                            <div class="down-arrow" id="buttonSortGenreDown"> &#9662;</div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Series</div>
+                                        <div> 
+                                            <div class="up-arrow" id="buttonSortSeriesUp"> &#9652; </div>
+                                            <div class="down-arrow" id="buttonSortSeriesDown"> &#9662;</div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Read</div>
+                                        <div> 
+                                            <div class="up-arrow" id="buttonSortReadUp"> &#9652; </div>
+                                            <div class="down-arrow" id="buttonSortReadDown"> &#9662;</div>
+                                        </div>
+                                    </div>
+                                </th>
+                            </thead>`;
         
         bookArray.forEach(function(element,) {
-            const bookLi = document.createElement('li');
+            const newRow = document.createElement('tr');
             let isSeries = "";
             if( element.series != null && element.series.trim() != "" ){
                 isSeries = "checked"
             };
-            bookLi.classList.add('bookMainView');
-            bookLi.innerHTML = `<li> 
-                                    <div class="ui-block-a">
-                                        <div class="ui-bar">
-                                            <p><a href="#viewBook" type="text">${element.title}</a></p>
-                                        </div>
-                                    </div>
-                                    <div class="ui-block-b">
-                                        <div class="ui-bar">
-                                            <div class="ui-bar">
-                                                <p><a href="#viewAuthor" type="text">${element.author.firstName} ${element.author.lastName}</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="ui-block-c">
-                                    <div class="ui-bar">${element.genre}</div>
-                                    </div>
-                                    <div class="ui-block-d">
-                                        <div class="ui-bar">
-                                            <input type="checkbox" disabled="disabled" ${isSeries}>
-                                        </div>
-                                    </div>
-                                    <div class="ui-block-e">
-                                        <div class="ui-bar">${element.readDate}</div>
-                                    </div>    
-                                </li> `;
-            bookLi.setAttribute("data-parm", element.id);
-            bookLi.setAttribute("data-parm-author", element.author.id);
-            bookList.appendChild(bookLi);
+            newRow.classList.add('bookMainView');
+            newRow.innerHTML = `<td class="tableData">
+                                    <a href="#viewBook" type="text">${element.title}</a>
+                                </td>
+                                <td class="tableData"> 
+                                    <a href="#viewAuthor" type="text">${element.author.firstName} ${element.author.lastName}</a>
+                                </td>
+                                <td class="tableData">
+                                    ${element.genre}
+                                </td>
+                                <td class="tableData">
+                                    <input type="checkbox" disabled="disabled" ${isSeries}/>
+                                </td>
+                                <td class="tableData">
+                                    ${element.readDate}
+                                </td>`;
+            newRow.setAttribute("data-parm", element.id);
+            newRow.setAttribute("data-parm-author", element.author.id);
+            bookList.appendChild(newRow);
         });
 
         //Genre
         document.getElementById("buttonSortGenreUp").addEventListener("click", function() {
-            bookArray.sort(dynamicSortUp("genre"));
-            createBookList();
+            createBookList(dynamicSortUp("genre"));
             document.location.href="index.html#view";
         })
 
         document.getElementById("buttonSortGenreDown").addEventListener("click", function() {
-            bookArray.sort(dynamicSortDown("genre"));
-            createBookList();
+            createBookList(dynamicSortDown("genre"));
             document.location.href="index.html#view";
         })
         //Title
         document.getElementById("buttonSortTitleUp").addEventListener("click", function() {
-            bookArray.sort(dynamicSortUp("title"));
-            createBookList();
+            createBookList(dynamicSortUp("title"));
             document.location.href="index.html#view";
         });
 
         document.getElementById("buttonSortTitleDown").addEventListener("click", function() {
-            bookArray.sort(dynamicSortDown("title"));
-            createBookList();
+            createBookList(dynamicSortDown("title"));
             document.location.href="index.html#view";
         })
         //Author
         document.getElementById("buttonSortAuthorUp").addEventListener("click", function() {
-            bookArray.sort((a, b) => `${a.author.firstName} ${a.author.lastName}`.localeCompare(`${b.author.firstName} ${b.author.lastName}`));
-            createBookList();
+            createBookList((a, b) => `${a.author.firstName} ${a.author.lastName}`.localeCompare(`${b.author.firstName} ${b.author.lastName}`));
             document.location.href="index.html#view";
         });
         document.getElementById("buttonSortAuthorDown").addEventListener("click", function() {
-            bookArray.sort((a, b) => `${b.author.firstName} ${b.author.lastName}`.localeCompare(`${a.author.firstName} ${a.author.lastName}`));
-            createBookList();
+            createBookList((a, b) => `${b.author.firstName} ${b.author.lastName}`.localeCompare(`${a.author.firstName} ${a.author.lastName}`));
             document.location.href="index.html#view";
         });
         //Series
         document.getElementById("buttonSortSeriesUp").addEventListener("click", function() {
-            bookArray.sort((a, b) => `${a.series}`.localeCompare(`${b.series}`));
-            createBookList();
+            createBookList((a, b) => `${a.series}`.localeCompare(`${b.series}`));
             document.location.href="index.html#view";
         });
 
         document.getElementById("buttonSortSeriesDown").addEventListener("click", function() {
-            bookArray.sort((a, b) => `${b.series}`.localeCompare(`${a.series}`));
-            createBookList();
+            createBookList((a, b) => `${b.series}`.localeCompare(`${a.series}`));
             document.location.href="index.html#view";
         });
         //Read
         document.getElementById("buttonSortReadUp").addEventListener("click", function() {
-            bookArray.sort((a, b) => `${a.readDate}`.localeCompare(`${b.readDate}`));
-            createBookList();
+            createBookList((a, b) => `${a.readDate}`.localeCompare(`${b.readDate}`));
             document.location.href="index.html#view";
         });
 
         document.getElementById("buttonSortReadDown").addEventListener("click", function() {
-            bookArray.sort((a, b) => `${b.readDate}`.localeCompare(`${a.readDate}`));
-            createBookList();
+            createBookList((a, b) => `${b.readDate}`.localeCompare(`${a.readDate}`));
             document.location.href="index.html#view";
         });
 
@@ -287,31 +319,34 @@ function createBookView(){
         count++;
     };
     let bookInfo = document.getElementById("viewBookContent");
-    bookInfo.innerHTML = `<h2>${bookElement.title}</h2>
-                        <div>
-                            <p>Author</p>
-                            <p><a href="#viewAuthor">${bookElement.author.firstName} ${bookElement.author.lastName}</a></p>
-                        </div>
-                        <div>
-                            <p>Genre</p>
-                            <p>${bookElement.genre}</p>
-                        </div>
-                        <div>
-                            <p>Series Title</p>
-                            <p>${bookElement.series}</p>
-                        </div>
-                        <div>
-                            <p>Date Read</p>
-                            <p>${bookElement.readDate}</p>
-                        </div>
-                        <div>
-                            <p>Keywords</p>
-                            <p>${bookElement.bookKeywords}</p>
-                        </div>
-                        <div id="bookLocation">
-                            <p>Book Location</p>
-                            <p><a href="${bookElement.location}">${bookElement.location}</a></p>
-                        </div>`;
+    bookInfo.innerHTML=`<div class="subViewBook">
+                            <h1>${bookElement.title}</h1>
+                            <div class="subViewTable">
+                                <div class="subViewInfo">
+                                    <div class="subViewCol">Author: </div>
+                                    <div class="subViewCol"><a href="#viewAuthor">${bookElement.author.firstName} ${bookElement.author.lastName}</a></div>
+                                </div>
+                                <div class="subViewInfo">
+                                    <div class="subViewCol">Genre: </div>
+                                    <div class="subViewCol">${bookElement.genre}</div>
+                                </div>
+                                <div class="subViewInfo">
+                                    <div class="subViewCol">Series Title: </div>
+                                    <div class="subViewCol">${bookElement.series}</div>
+                                </div>
+                                <div class="subViewInfo">
+                                    <div class="subViewCol">Date Read: </div>  
+                                    <div class="subViewCol">${bookElement.readDate}</div>
+                                </div>
+                                <div class="subViewInfo">
+                                    <div class="subViewCol">Keywords: </div>
+                                    <div class="subViewCol">${bookElement.bookKeywords}</div>
+                                </div>
+                                <div class="subViewInfo">
+                                    <div class="subViewCol">Book Location: </div>
+                                    <div class="subViewCol"><a id="bookLocation" href="${bookElement.location}" title="${bookElement.location}">Website</a></div>
+                                </div>
+                            </div>`;
 };
 
 

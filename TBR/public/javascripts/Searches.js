@@ -33,85 +33,62 @@ document.addEventListener("DOMContentLoaded", function(e){
 });
     
 function viewSearch(){
+    stringAuthorArray = JSON.stringify(locStorAuthorArray);
+    localStorage.setItem("authorArray", stringAuthorArray);
+    locStorAuthorArray = JSON.parse(localStorage.getItem('bookArray'));
+
+    stringBookArray = JSON.stringify(locStorBookArray);
+    localStorage.setItem("bookArray", stringBookArray);
+    locStorBookArray = JSON.parse(localStorage.getItem('bookArray'));
+
     let searchList = document.getElementById("searchResults");
-    searchList.innerHTML = `<li>
-                            <div class="ui-block-a">
-                                <div class="ui-bar">Title</div>
-                                <div class="up-arrow" id="buttonSortTitleUp"> &#9650; </div>
-                                <div class="down-arrow" id="buttonSortTitleDown"> &#9660;</div>
-                            </div>
-                            <div class="ui-block-b">
-                                <div class="ui-bar">Author</div>
-                                <div class="up-arrow" id="buttonSortAuthorUp"> &#9650; </div>
-                                <div class="down-arrow" id="buttonSortAuthorDown"> &#9660;</div>
-                            </div>
-                            <div class="ui-block-c">
-                                <div class="ui-bar">KeyWords</div>
-                            </div>
-                        </li>`;
+    searchList.innerHTML = `<thead class="tableBar">
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Title</div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">Author</div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="tableHeader">
+                                        <div class="headerCol">KeyWords</div>
+                                    </div>
+                                </th>
+                            </thead>`;
     
     searchArray.forEach(function(element) {
-        const resultLi = document.createElement('li');
+        const newRow = document.createElement('tr');
         let keywords;
         let title;
         let author;
         if( element.type === "book"){
             keywords = element.bookKeywords;
             title = element.title;
-            author = `${element.author.firstName} ${element.author.firstName}`
-            resultLi.setAttribute("data-parm", element.id);
-            resultLi.setAttribute("data-parm-author", element.author.id);
+            author = `${element.author.firstName} ${element.author.lastName}`
+            newRow.setAttribute("data-parm", element.id);
+            newRow.setAttribute("data-parm-author", element.author.id);
         } else {
-            keywords = element.authorKeyWords;
+            keywords = element.authorKeywords;
             title = "";
             author = `${element.firstName} ${element.firstName}`
-            resultLi.setAttribute("data-parm-author", element.id);
+            newRow.setAttribute("data-parm-author", element.id);
         };
-        resultLi.classList.add('searchEntries')
+        newRow.classList.add('searchEntries')
 
-        resultLi.innerHTML = `<li> 
-                                <div class="ui-block-a">
-                                    <div class="ui-bar">
-                                        <p><a href="#viewBook" type="text">${title}</a></p>
-                                    </div>
-                                </div>
-                                <div class="ui-block-b">
-                                    <div class="ui-bar">
-                                        <div class="ui-bar">
-                                            <p><a href="#viewAuthor" type="text">${author}</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ui-block-c">
-                                <div class="ui-bar">${keywords}</div>
-                                </div>
-                            </li> `;
-
-
-        searchList.appendChild(resultLi);
-    });
-
-    //Title Arrows
-    document.getElementById("buttonSortTitleUp").addEventListener("click", function() {
-        locStorBookArray.sort(dynamicSortUp("title"));
-        viewSearch();
-        document.location.href="index.html#search";
-    });
-    document.getElementById("buttonSortTitleDown").addEventListener("click", function() {
-        locStorBookArray.sort(dynamicSortDown("title"));
-        viewSearch();
-        document.location.href="index.html#search";
-    })
-    //Author Arrows
-    document.getElementById("buttonSortAuthorUp").addEventListener("click", function() {
-        locStorBookArray.sort((a, b) => `${a.author.firstName} ${a.author.lastName}`.localeCompare(`${b.author.firstName} ${b.author.lastName}`));
-        viewSearch();
-        document.location.href="index.html#search";
-    });
-    document.getElementById("buttonSortAuthorDown").addEventListener("click", function() {
-        locStorBookArray.sort((a, b) => `${b.author.firstName} ${b.author.lastName}`.localeCompare(`${a.author.firstName} ${a.author.lastName}`));
-        viewSearch();
-        document.location.href="index.html#search";
+        newRow.innerHTML = `<td class="tableData">
+                                <a href="#viewBook" type="text">${title}</a>
+                            </td>
+                            <td class="tableData">
+                                <a href="#viewAuthor" type="text">${author}</a>
+                            </td>
+                            <td class="tableData">
+                                <div>${keywords}</div>
+                            </td>`;
+        searchList.appendChild(newRow);
     });
 
     let individualBooksList = document.getElementsByClassName("searchEntries");
@@ -135,21 +112,9 @@ function viewSearch(){
     })
 };
 
-function dynamicSortUp(property){
-    return function (a, b) {
-        return a[property].localeCompare(b[property]);
-    }
-};
-
-function dynamicSortDown(property){
-    return function (a, b) {
-        return b[property].localeCompare(a[property]);
-}};
-
 function findSearch(){
     let input = document.getElementById('iSearchWords').value;
     let regexes = input.split(',').map(regex => new RegExp(regex.trim(), "i"));
-    console.log("reg", regexes)
 
     let result = [];
 
@@ -175,6 +140,4 @@ function findSearch(){
             .map( obj => ({...obj, type: "author"}) ));
     }
     searchArray = result;
-
-    console.log(searchArray);
 };

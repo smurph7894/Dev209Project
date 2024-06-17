@@ -10,7 +10,6 @@ function createAuthorView(){
     let count = 0;
     let bookElement;
     while(!foundParm){
-        console.log(authorId)
         if(locStorBookArray[count].author.id === authorId){
             bookElement = locStorBookArray[count];
             foundParm = true;
@@ -19,22 +18,27 @@ function createAuthorView(){
     };
 
     let authorInfo = document.getElementById("viewAuthorContent");
-    authorInfo.innerHTML = `<h2>${bookElement.author.firstName} ${bookElement.author.lastName}</h2>
-                            <div>
-                                <p>Title</p>
-                                <p><a href="#viewBook">${bookElement.title}</a></p>
-                            </div>
-                            <div>
-                                <p>Alter Egos</p>
-                                <p>${bookElement.author.AlterEgos}</p>
-                            </div>
-                            <div>
-                                <p>Keywords</p>
-                                <p>${bookElement.author.authorKeywords}</p>
-                            </div>
-                            <div>
-                                <p>Author Website</p>
-                                <p><a href="${bookElement.author.authorWebsite}">${bookElement.author.authorWebsite}</a></p>
-                            </div>`
+    authorInfo.innerHTML =`<div class="subViewBook">
+                                <h1>${bookElement.author.firstName} ${bookElement.author.lastName}</h1>
+                                <div class="subViewTable">
+                                    <div class="subViewInfo">
+                                        <div class="subViewCol">Title: </div>
+                                        <div class="subViewCol"><a href="#viewBook">${bookElement.title}</a></div>
+                                    </div>
+                                    <div class="subViewInfo">
+                                        <div class="subViewCol">Alter Egos: </div>
+                                        <div class="subViewCol">${bookElement.author.AlterEgos}</div>
+                                    </div>
+                                    <div class="subViewInfo">
+                                        <div class="subViewCol">Keywords: </div>
+                                        <div class="subViewCol">${bookElement.author.authorKeywords}</div>
+                                    </div>
+                                    <div class="subViewInfo">
+                                        <div class="subViewCol">Author Website: </div>  
+                                        <div class="subViewCol"><a href="${bookElement.author.authorWebsite}" title="${bookElement.author.authorWebsite}">Website</a></div>
+                                    </div>
+                                </div>
+                            </div>`;
 };
+
 
