@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function(e){
 function viewSearch(){
     stringAuthorArray = JSON.stringify(locStorAuthorArray);
     localStorage.setItem("authorArray", stringAuthorArray);
-    locStorAuthorArray = JSON.parse(localStorage.getItem('bookArray'));
+    locStorAuthorArray = JSON.parse(localStorage.getItem('authorArray'));
 
     stringBookArray = JSON.stringify(locStorBookArray);
     localStorage.setItem("bookArray", stringBookArray);
@@ -74,19 +74,19 @@ function viewSearch(){
         } else {
             keywords = element.authorKeywords;
             title = "";
-            author = `${element.firstName} ${element.firstName}`
+            author = `${element.firstName} ${element.lastName}`
             newRow.setAttribute("data-parm-author", element.id);
         };
         newRow.classList.add('searchEntries')
 
-        newRow.innerHTML = `<td class="tableData">
-                                <a href="#viewBook" type="text">${title}</a>
+        newRow.innerHTML = `<td class="tableData" onclick="navBook()">
+                                ${title}
+                            </td>
+                            <td class="tableData" onclick="navAuthor()">
+                                ${author}
                             </td>
                             <td class="tableData">
-                                <a href="#viewAuthor" type="text">${author}</a>
-                            </td>
-                            <td class="tableData">
-                                <div>${keywords}</div>
+                                ${keywords}
                             </td>`;
         searchList.appendChild(newRow);
     });
@@ -112,6 +112,14 @@ function viewSearch(){
     })
 };
 
+function navBook(){
+    document.location.href="index.html#viewBook";
+};
+
+function navAuthor(){
+    document.location.href="index.html#viewAuthor";
+};
+
 function findSearch(){
     let input = document.getElementById('iSearchWords').value;
     let regexes = input.split(',').map(regex => new RegExp(regex.trim(), "i"));
@@ -130,7 +138,7 @@ function findSearch(){
             obj.bookKeywords?.some(e => regexSearch.test(e) ) ||
             regexSearch.test(obj.location))
             .map( obj => ({...obj, type: "book"}) ));
-        
+
         result.push(...locStorAuthorArray.filter(
             obj => regexSearch.test(obj.firstName) || 
             regexSearch.test(obj.lastName) ||
@@ -138,6 +146,8 @@ function findSearch(){
             obj.authorKeywords?.some(e => regexSearch.test(e) ) ||
             regexSearch.test(obj.authorWebsite))
             .map( obj => ({...obj, type: "author"}) ));
+
     }
     searchArray = result;
+
 };

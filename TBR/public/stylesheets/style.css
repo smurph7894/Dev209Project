@@ -83,8 +83,6 @@ ul {
   display: flex;
   flex-direction: row;
   text-align: start;
-  margin-left: 2rem;
-
 }
 
 .subViewCol {
@@ -95,8 +93,10 @@ ul {
 
 .subViewTable{
  display: flex;
- flex-wrap: wrap;
- margin-left: 3rem;
+ flex-direction: column;
+ margin: auto;
+ border: solid 1px black;
+ padding: 1rem;
 }
 
 .subViewBook{

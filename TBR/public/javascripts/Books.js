@@ -200,25 +200,45 @@ function createBookList(sortFn = dynamicSortUp("title")){
                 isSeries = "checked"
             };
             newRow.classList.add('bookMainView');
-            newRow.innerHTML = `<td class="tableData">
-                                    <a href="#viewBook" type="text">${element.title}</a>
+            newRow.innerHTML = `<td class="tableData" onclick="navBook()">
+                                    ${element.title}
                                 </td>
-                                <td class="tableData"> 
-                                    <a href="#viewAuthor" type="text">${element.author.firstName} ${element.author.lastName}</a>
+                                <td class="tableData" onclick="navAuthor()"> 
+                                    ${element.author.firstName} ${element.author.lastName}
                                 </td>
-                                <td class="tableData">
+                                <td class="tableData" onclick="navBook()">
                                     ${element.genre}
                                 </td>
-                                <td class="tableData">
+                                <td class="tableData" onclick="navBook()">
                                     <input type="checkbox" disabled="disabled" ${isSeries}/>
                                 </td>
-                                <td class="tableData">
+                                <td class="tableData" onclick="navBook()">
                                     ${element.readDate}
                                 </td>`;
             newRow.setAttribute("data-parm", element.id);
             newRow.setAttribute("data-parm-author", element.author.id);
             bookList.appendChild(newRow);
         });
+
+        let individualAuthorsList = document.getElementsByClassName("bookMainView");
+        authorIdParmArray = Array.from(individualAuthorsList);
+
+        authorIdParmArray.forEach(function (element) {
+            element.addEventListener("click", function () {
+                let parm = this.getAttribute("data-parm-author");
+                localStorage.setItem('parm-author', parm);
+            })
+        });
+
+        let individualBooksList = document.getElementsByClassName("bookMainView");
+        bookIdParmArray = Array.from(individualBooksList);
+
+        bookIdParmArray.forEach(function (element, i) {
+            element.addEventListener("click", function () {
+                let parm = this.getAttribute("data-parm");
+                localStorage.setItem('parm', parm);
+            })
+        });      
 
         //Genre
         document.getElementById("buttonSortGenreUp").addEventListener("click", function() {
@@ -268,31 +288,16 @@ function createBookList(sortFn = dynamicSortUp("title")){
         document.getElementById("buttonSortReadDown").addEventListener("click", function() {
             createBookList((a, b) => `${b.readDate}`.localeCompare(`${a.readDate}`));
             document.location.href="index.html#view";
-        });
-
-
-        let individualBooksList = document.getElementsByClassName("bookMainView");
-        bookIdParmArray = Array.from(individualBooksList);
-
-        bookIdParmArray.forEach(function (element, i) {
-            element.addEventListener("click", function () {
-                let parm = this.getAttribute("data-parm");
-                localStorage.setItem('parm', parm);
-
-
-            })
-        });
-
-        let individualAuthorsList = document.getElementsByClassName("bookMainView");
-        authorIdParmArray = Array.from(individualAuthorsList);
-
-        authorIdParmArray.forEach(function (element) {
-            element.addEventListener("click", function () {
-                let parm = this.getAttribute("data-parm-author");
-                localStorage.setItem('parm-author', parm);
-            })
-        });
+        });        
     });
+};
+
+function navBook(){
+    document.location.href="index.html#viewBook";
+};
+
+function navAuthor(){
+    document.location.href="index.html#viewAuthor";
 };
 
 function dynamicSortUp(property){
@@ -307,6 +312,8 @@ function dynamicSortDown(property){
 }};
 
 // View Book //
+let bookWebsite;
+
 function createBookView(){
     let foundParm = false;
     let count = 0;
@@ -319,6 +326,7 @@ function createBookView(){
         count++;
     };
     let bookInfo = document.getElementById("viewBookContent");
+    bookWebsite = bookElement.location;
     bookInfo.innerHTML=`<div class="subViewBook">
                             <h1>${bookElement.title}</h1>
                             <div class="subViewTable">
@@ -344,10 +352,12 @@ function createBookView(){
                                 </div>
                                 <div class="subViewInfo">
                                     <div class="subViewCol">Book Location: </div>
-                                    <div class="subViewCol"><a id="bookLocation" href="${bookElement.location}" title="${bookElement.location}">Website</a></div>
+                                    <div class="subViewCol" onclick ="BookWebsiteClickHandler()" title="${bookElement.location}"><a>Website</a></div>
                                 </div>
                             </div>`;
 };
 
-
+function BookWebsiteClickHandler(){
+    window.open(bookWebsite)
+};
 

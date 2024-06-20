@@ -5,7 +5,11 @@ $(document).on("pagebeforeshow", "#viewAuthor", function(e){
     createAuthorView();
 });
 
+let website;
+
 function createAuthorView(){
+    let alterEgo;
+    let kword;
     let foundParm = false;
     let count = 0;
     let bookElement;
@@ -17,6 +21,17 @@ function createAuthorView(){
         count++;
     };
 
+    if(bookElement.AlterEgos === undefined){
+        alterEgo = "";
+    } else {
+        alterEgo = bookElement.author.AlterEgos;
+    }
+    if(bookElement.author.authorKeywords === undefined){
+        kword = "";
+    } else {
+        kword = bookElement.author.authorKeywords;
+    }
+    website = bookElement.author.authorWebsite
     let authorInfo = document.getElementById("viewAuthorContent");
     authorInfo.innerHTML =`<div class="subViewBook">
                                 <h1>${bookElement.author.firstName} ${bookElement.author.lastName}</h1>
@@ -27,18 +42,22 @@ function createAuthorView(){
                                     </div>
                                     <div class="subViewInfo">
                                         <div class="subViewCol">Alter Egos: </div>
-                                        <div class="subViewCol">${bookElement.author.AlterEgos}</div>
+                                        <div class="subViewCol">${alterEgo}</div>
                                     </div>
                                     <div class="subViewInfo">
                                         <div class="subViewCol">Keywords: </div>
-                                        <div class="subViewCol">${bookElement.author.authorKeywords}</div>
+                                        <div class="subViewCol">${kword}</div>
                                     </div>
                                     <div class="subViewInfo">
                                         <div class="subViewCol">Author Website: </div>  
-                                        <div class="subViewCol"><a href="${bookElement.author.authorWebsite}" title="${bookElement.author.authorWebsite}">Website</a></div>
+                                        <div class="subViewCol" onclick ="WebsiteClickHandler()" title="${bookElement.author.authorWebsite}"><a>Website</a></div>
                                     </div>
                                 </div>
                             </div>`;
 };
 
+
+function WebsiteClickHandler(){
+    window.open(website)
+};
 
