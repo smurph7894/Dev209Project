@@ -2,7 +2,7 @@
 DEV 209 Project - JQM App
 ###
 Project Requirements:
-# requirement 1
+<detail> requirement 1</detail>
 - Welcome page's subtitle notes this app is for tracking your reading list. (TBR - To Be Read).
 - JQuery NavBar navigates to Home, View(main), Add(main), and Search pages. 
 - Add Author and Book are reachable through buttons on the Add page and View Author and Book are reachable through the tables on the View and Search pages.
